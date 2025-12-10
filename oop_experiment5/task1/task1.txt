@@ -1,0 +1,24 @@
+问题1：抽象类机制
+（1）是什么决定了 Publisher 是抽象类？用一句话说明，并指出代码中的具体依据。
+    含有纯虚函数。
+    virtual void publish() const=0;
+    virtual void use() const =0;
+
+（2）如果在 main.cpp 里直接写 Publisher p; 能否编译通过？为什么？
+    不可以，抽象类不能被实例化。
+
+问题2：纯虚函数与接口继承
+（1） Book 、 Film 、 Music 必须实现哪两个函数才能通过编译？请写出其完整函数声明。
+    virtual void publish() const=0;
+    virtual void use() const =0;
+（2） 在 publisher.cpp 的 Film 类实现中，把两个成员函数实现里的 const 去掉（保持函数体不变），重新编译，报错信息是什么？
+    两个纯虚函数在Film这个类中未被正确override。
+
+问题3：运行时多态与虚析构
+（1）在 test1() 里， for (Publisher *ptr : v) 中 ptr 的声明类型是什么？
+    Publisher *，基类指针。
+（2）当循环执行到 ptr->publish();时， ptr 实际指向的对象类型分别有哪些？（按循环顺序写出）
+    Book Film Music
+（3）基类 Publisher 的析构函数为何声明为virtual ？若删除 virtual ，执行 delete ptr; 会出现什么问题？
+    确保用基类指针定义的派生类对象在删除时派生类的析构函数也能被正确调用。
+    如果删除，当执行delete ptr时无法调用派生类的析构函数，如果派生类对象新添的数据成员如（string）无法被销毁，会造成内存泄漏。 
