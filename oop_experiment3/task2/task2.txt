@@ -1,0 +1,15 @@
+问题1:  std::vector<int> v1(5,42) 这个构造创建了一个包含5个元素的vector数组，且每个元素赋值42
+        const std::vector<int> v2(v1); 这个对v1整体进行了一个复制，也包含5个值为42的数据项
+
+问题2：v1.size()=2 , v2.size()=2 , v1[0].size()=3
+
+问题3：可以实现同样效果。区别是at()会做边界检查。
+
+问题4：测试模块2中执行 v1.at(0).push_back(-1); 后
+（1）能输出-1，v1.at(0)是v1的的第一个vector数组，r是对它的引用，(r.size()-1)就是这个r的vector最后一个元素，也就是刚刚push_back进去的元素-1。
+（2）使用const &类型接收返回值使用引用类型，避免了拷贝，节省内存资源，限制是权限为只读，无法通过r修改。
+
+问题5：
+（1） 标准库模板类 vector 的复制构造函数实现的是深复制。
+（2） 当v是 vector<int>时， v.at(0) 返回值类型是int&,当v是 const vector<int> 时， v.at(0) 返回值类型是const int&
+      所以at()必须提供const重载版本。因为const对象只能调用const成员函数，若没有const版本的at()，const vector将无法通过at()访问元素。

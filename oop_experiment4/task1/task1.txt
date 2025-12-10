@@ -1,0 +1,39 @@
+问题1：组合关系识别
+GradeCalc 类声明中，逐行写出所有体现"组合"关系的成员声明，并用一句话说明每个被组合对象的功能。
+(1)std::string course_name; 组合了string类，代表的是课程的名称
+(2)std::vector<int> grades; 组合了vector类，用这个数组存储课程的成绩
+(3)std::array<int, 5> counts; 组合了array类，保存各分数段人数
+(4)std::array<double, 5> rates; 组合了array类，保存各分数段人数占比
+
+问题2：接口暴露理解
+如在 test 模块中这样使用，是否合法？如不合法，解释原因
+GradeCalc c("OOP");
+c.inupt(5);
+c.push_back(97); //合法吗？
+回答：这道题想问的是c.grades.push_back(97)? 题目给出的c.push_back()这个类没有这个方法
+这里是不合法的，grades是私有成员
+
+问题3：架构设计分析
+当前设计方案中，compute在info 模块中调用：
+（1）连续打印3次统计信息， compute 会被调用几次？标记 is_dirty 起到什么作用？
+    一次。is_dirty用于标记成绩有没有被更改过，如果没有被更改过，不用再次compute，省去重复操作。
+（2）如新增 update_grade(index, new_grade) ,这种设计需要更改 compute 调用位置吗？简洁说明理由。
+    可以不更改位置，info()的作用是将目前最新的成绩情况统计打印出来，加上这个update函数内部更改完数据后将is_dirty设置为true就可以了。
+
+问题4：功能扩展设计
+要增加"中位数"统计，不新增数据成员怎么做？在哪个函数里加？写出伪代码。
+回答：按test()中顺序，info()的调用在sort之后，中位数可以直接在info()里面加：
+std::cout<<"中位数:"<<(grades[n/2]+grades[(n-1)/2])/2;
+
+问题5：数据状态管理
+GradeCalc 和 compute 中都包含代码： counts.fill(0); rates.fill(0); 。
+compute 中能否去掉这两行？如去掉，在哪种使用场景下会引发统计错误？
+回答： 不能，如果重复用用一个GradeCalc对象input两次，如果不在compute里面再次置0，会保留上一次的计算结果。
+
+问题6：内存管理理解
+input 模块中代码 grades.reserve(n); 如果去掉：
+（1）对程序功能有影响吗？（去掉重新编译、运行，观察功能是否受影响）
+    没有
+（2）对性能有影响吗？如有影响，用一句话陈述具体影响。
+    有，reverse()函数是用于vector对象预留足够空间的，避免因空间不足而扩容，影响性能和效率
+

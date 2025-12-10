@@ -1,0 +1,29 @@
+问题1：对象关系识别
+（1）写出Graph.hpp中体现"组合"关系的成员声明代码行，并用一句话说明被组合对象的功能。
+std::vector<Graph*> graphs;存储需要画在画布上的图形
+（2）写出Graph.hpp中体现"继承"关系的类声明代码行。
+class Circle:public Graph
+class Triangle:public Graph
+class Rectangle:public Graph
+
+问题2：多态机制观察
+（1） Graph 中的 draw 若未声明成虚函数， Canvas::paint() 中 g->draw() 运行结果会有何不同？
+    会变成静态绑定，调用的是父类Graph的draw()方法，没有输出
+（2）若 Canvas 类 std::vector<Graph*> 改成 std::vector<Graph> ，会出现什么问题？
+    多态失效，在把对象加入到vector数组中时会发生对象切片
+（3）若 ~Graph() 未声明成虚函数，会带来什么问题？
+    当通过基类指针删除派生类对象时，只会调用基类Graph的析构函数，派生类的析构函数根本不被调用。
+
+问题3：扩展性思考
+若要新增星形 Star ，需在哪些文件做哪些改动？逐一列出。
+    首先是需要新增一个枚举类型Star
+    然后是需要在tr_to_GraphType函数中加一个if条件 if(t=="star") return GraphType::Star;
+    再在make_graph函数中新加一个switch的枚举变量  case GraphType::Star: return new Star;
+
+问题4：资源管理
+观察 make_graph 函数和 Canvas 析构函数：
+（1） make_graph 返回的对象在什么地方被释放？
+    在Canvas的虚构函数~Canvas()中释放。
+（2）使用原始指针管理内存有何利弊？
+    利：性能较高，无需像智能指针那样的额外开销
+    弊：需要自己手动控制其生命周期，容易造引起一些安全问题

@@ -1,0 +1,23 @@
+问题1：版本2中在刚开始就直接将原来的内存释放，但如果后面操作失败，无法恢复之前的数据，应该安全地给新的内存赋值后，再释放原来的内存。
+       而且版本2没有考虑拷贝自己的情况，如果拷贝自己可以省去其他操作，直接返回自身。
+
+问题2：
+（1）static_cast<const vectorInt*>(this) 的作用是将非const指针vectorInt*转换为const指针const vectorInt* 
+    转换目的是便于调用const成员函数
+（2）const_cast<int&> 的作用是将const int& (const引用)转换为int& (非const引用)
+    转换目的是将const返回值转换为非const，使得非const的at函数能够返回可修改的引用int &
+
+int& vectorInt::at(int index){
+    //static_cast: 将this转为const，调用const at()
+    //const_cast: 将返回值const int&转为int&
+    return const_cast<int&>(static_cast<const vectorInt*>(this)->at(index));
+}
+
+问题3：
+（1）v1是普通类型的对象，优先调用非const类型，v2是const类型对象，只能调用const成员成员函数
+（2）感觉好像迭代器就是指针的另一种表现形式
+
+问题4：可以的。
+    std::fill_n(ptr, n, value);使用value填充ptr的前n个元素
+    std::copy_n(v1.ptr, v1.n, ptr);是将v1.ptr的前n个元素拷贝到新的ptr中
+    std::copy_n(v1.ptr, v1.n, ptr_tmp); 在assign函数中安全地拷贝数据到临时数组ptr_tmp
