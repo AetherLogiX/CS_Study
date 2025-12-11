@@ -18,7 +18,7 @@
 （1）在 test1() 里， for (Publisher *ptr : v) 中 ptr 的声明类型是什么？
     Publisher *，基类指针。
 （2）当循环执行到 ptr->publish();时， ptr 实际指向的对象类型分别有哪些？（按循环顺序写出）
-    Book Film Music
+    Book Film Music。
 （3）基类 Publisher 的析构函数为何声明为virtual ？若删除 virtual ，执行 delete ptr; 会出现什么问题？
     确保用基类指针定义的派生类对象在删除时派生类的析构函数也能被正确调用。
     如果删除，当执行delete ptr时无法调用派生类的析构函数，如果派生类对象新添的数据成员如（string）无法被销毁，会造成内存泄漏。 

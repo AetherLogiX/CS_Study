@@ -1,0 +1,16 @@
+问题1：重载运算符<<
+（1）找出运算符 << 被重载了几处？分别用于什么类型？
+    两处，都是用于友元函数
+（2）找出使用重载 << 输出对象的代码，写在下面。
+    out << item.rb
+    cout << t << endl;
+问题2：图书销售统计
+（1）图书销售记录"按销售数量降序排序"，代码是如何实现的？
+    bool compare_by_amount(const BookSale &x1, const BookSale &x2) {
+        return x1.get_amount() > x2.get_amount();
+    }
+（2）拓展（选答*）：如果使用lambda表达式，如何实现"按销售数量降序排序"？
+    sort(sales_lst.begin(), sales_lst.end(),[](const BookSale &x1, const BookSale &x2){
+            return x1.get_amount() > x2.get_amount();
+        } 
+    );
