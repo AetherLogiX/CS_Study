@@ -12,11 +12,11 @@ std::ostream& operator<<(std::ostream &out,const Book &book){
     using std::setw;
 
     out<<left;
-    out << setw(20) << "书名:" << book.name << '\n'
-        << setw(20) << "作者:" << book.author << '\n'
-        << setw(20) << "译者:" << book.translator << '\n'
-        << setw(20) << "ISBN:" << book.isbn << '\n'
-        << setw(20) << "定价:" << book.price;
+    out << setw(15) << "书名:" << book.name << '\n'
+        << setw(15) << "作者:" << book.author << '\n'
+        << setw(15) << "译者:" << book.translator << '\n'
+        << setw(15) << "ISBN:" << book.isbn << '\n'
+        << setw(15) << "定价:" << book.price;
 
     return out;
 }

@@ -21,8 +21,8 @@ std::ostream& operator<<(std::ostream &out,const BookSale&item){
 
     out<<left;
     out << item.rb << '\n'
-        << setw(20) << "售价:" << item.sales_price << '\n'
-        << setw(20) << "销售数量:" << item.sales_amount << '\n'
-        << setw(20) << "营收:" << item.get_revenue();
+        << setw(15) << "售价:" << item.sales_price << '\n'
+        << setw(15) << "销售数量:" << item.sales_amount << '\n'
+        << setw(15) << "营收:" << item.get_revenue();
     return out;
 }
